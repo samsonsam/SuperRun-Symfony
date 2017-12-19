@@ -5,11 +5,22 @@ framework:
     #http_method_override: true
 
     # uncomment this entire section to enable sessions
-    #session:
-    #    # With this config, PHP's native session handling is used
-    #    handler_id: ~
+    session:
+        # With this config, PHP's native session handling is used
+        handler_id: ~
 
     #esi: ~
     #fragments: ~
     php_errors:
         log: true
+    assets:
+        base_path: '%project_dir/assets'
+        packages:
+            bootstrap:
+                base_urls: "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2"
+            fontawesome:
+                base_urls: "https://use.fontawesome.com/releases/v5.0.0/css"
+            jQuery:
+                base_urls: "https://code.jquery.com/"
+            popper:
+                base_urls: "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd"

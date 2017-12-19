@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+{% set page_title = 'Läuferübersicht' %}
+{% block stylesheets %}
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+        .vcenter {
+            display: inline-block;
+            vertical-align: middle;
+            float: none;
+        }
+    </style>
+{% endblock %}
+
+{#
+Tabelle, die zeilenweise alle Läufer auflistet. Die Tabelle soll folgende Spalten haben:
+Läufername (= Nutzername)
+Anzahl der Lauftage
+Gesamte bisher gelaufene Strecke
+
+array(
+"0" => array(
+        "name" => 'max'
+        "runs" => array( Run Object, Run Object)
+        )
+"1" => array(
+        "name" => 'peter'
+        "runs" => array( Run Object, Run Object)
+        )
+)
+
+#}
+
+{% block body %}
+    <h1>{{ page_title }}</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-auto col-md-auto col-lg-auto vcenter">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Läufername</th>
+                        <th>Anzahl der Lauftage</th>
+                        <th>Gesamte bisher gelaufene Strecke</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>
+                            Läufername
+                        </td>
+                        <td>
+                            Anzahl der Lauftage
+                        </td>
+                        <td>
+                            Gesamte bisher gelaufene Strecke
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

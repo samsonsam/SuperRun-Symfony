@@ -2,42 +2,146 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}Supero{% endblock %}</title>
+    <title>{% block title %}{{ page_title }}{% endblock %}</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <style>
+        html {
+            /*background-color: black;*/
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 60px;
+            height: 100%;
+            max-height: 100%;
+        }
+
+        .white {
+            color: white;
+            text-shadow: 1px 1px 5px black;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            /* Set the fixed height of the footer here */
+            height: 60px;
+            line-height: 60px; /* Vertically center the text there */
+            background-color: #f5f5f5;
+            /*height: 140px;*/
+        }
+
+        .dropdown-menu {
+            width: 400%;
+        }
+
+        .navbar-brand > b {
+            font-size: 130%;
+            color: darkred;
+            /*text-shadow: 0px 0.25px 5px darkmagenta;*/
+        }
+
+        .dropdown-menu {
+            right: 0;
+            left: auto;
+            width: 50%;
+        }
+    </style>
     {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('bootstrap.min.css', 'bootstrap') }}">
-        <link rel="stylesheet" href="{{ asset('bootstrap-theme.min.css', 'bootstrap') }}">
-        <link rel="stylesheet" href="{{ asset('all.css', 'fontawesome') }}">
+        {#<link rel="stylesheet" href="{{ asset('css/base.css') }}">#}
+        {#<link rel="stylesheet" href="./assets/css/base.css">#}
     {% endblock %}
 </head>
 <body>
 {% block navbar %}
-    <nav class="navbar navbar-toggleable-md bg-faded navbar-light">
+    <nav id="navbar" class="navbar navbar-toggleable-md bg-faded navbar-light">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                 data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="{{ path('index') }}"><b style="color: darkred;">SuperRun</b></a>
+        <a class="navbar-brand" href="{{ path('start') }}"><b>SuperRun</b></a>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link {% if pagetitle == 'Überblick' %} active {% endif %}"
+                    <a class="nav-link {% if page_title == 'Übersicht' %} active {% endif %}"
                        href="{{ path('overview') }}">Übersicht</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if pagetitle == 'Detailansicht' %} active {% endif %}"
+                    <a class="nav-link {% if page_title == 'Läuferübersicht' %} active {% endif %}"
+                       href="{{ path('run_overview') }}">Läuferübersicht</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if page_title == 'Detailansicht' %} active {% endif %}"
                        href="{{ path('detail_view') }}">Detailansicht</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if pagetitle == 'Neuer Eintrag' %} active {% endif %}"
+                    <a class="nav-link {% if page_title == 'Neuer Eintrag' %} active {% endif %}"
                        href="{{ path('input') }}">Neuer Eintrag</a>
                 </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{{ path('profile') }}" id="navbarDropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ app.user.username|capitalize }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{{ path('profile') }}">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <strong>{{ app.user.username|capitalize }}</strong>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ path('logout') }}">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                Abmelden
+                            </a>
+                        </div>
+                    </li>
+                {% else %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('login') }}">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i>
+                            Login
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </nav>
 {% endblock %}
 {% block body %}{% endblock %}
-{% block javascripts %}{% endblock %}
+{% block footer %}
+    <footer class="footer text-center">
+        <div class="container">
+        <span class="text-muted">
+            <a href="404">Impressum</a>
+            <a href="404">FAQ</a>
+            <p>© Samuel Erb</p>
+        </span>
+        </div>
+    </footer>
+{% endblock %}
+<script rel="script" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script rel="script" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+<script rel="script" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

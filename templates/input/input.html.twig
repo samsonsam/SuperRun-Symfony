@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% set page_title = 'Input' %}
+
+{% block body %}
+    <div class="container">
+        <div class="col-sm-4 col-md-4 col-xs-4">
+            <h2>Neuer Lauf Eintrag</h2>
+            <form method="post" action="{{ path('input') }}">
+                <div class="form-group">
+                    <label class="control-label">Datum:</label>
+                    <input id="datePicker" name="date" class="form-control" type="date" data-format="dd.mm.yyyy">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Strecke:</label>
+                    <input name="distance" class="form-control" type="text" data-format="nn.n" placeholder="Strecke in km">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Zeit:</label>
+                    <input name="time" class="form-control" type="text" data-format="hh:mm:ss" placeholder="HH:MM:SS">
+                </div>
+                <button class="btn btn-primary" type="submit">Speichern</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        Date.prototype.toDateInputValue = (function () {
+            var local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0, 10);
+        });
+        document.getElementById('datePicker').value = new Date().toDateInputValue();
+
+    </script>
+{% endblock %}

@@ -21,7 +21,6 @@ if (!isset($_SERVER['APP_ENV'])) {
     }
     (new Dotenv())->load(__DIR__.'/../.env');
 }
-//$input = new ArgvInput(["server:start"]);
 $input = new ArgvInput();
 $env = $input->getParameterOption(['--env', '-e'], $_SERVER['APP_ENV'] ?? 'dev');
 $debug = ($_SERVER['APP_DEBUG'] ?? ('prod' !== $env)) && !$input->hasParameterOption(['--no-debug', '']);

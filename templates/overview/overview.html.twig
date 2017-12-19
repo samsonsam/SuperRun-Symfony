@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+{% set page_title = 'Überblick' %}
+{% block body %}
+    <h1>{{ page_title }}</h1>
+    <div class="jumbotron"
+         style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/f5/Waldstadion-Neuenrade.jpg'); background-position: center right">
+        <h2 class="white">Sie sind ...</h2>
+        <br>
+        <p class="white">an insgesamt
+            <strong>{{ data.total_activity }}</strong> {% if data.total_activity == 1 %}Tag {% else %}Tagen {% endif %}
+            gelaufen</p>
+        <p class="white">im Zeitraum von
+            <strong>{{ data.activity_span }}</strong> {% if data.activity_span == 1 %}Tag {% else %}Tagen {% endif %}
+        </p>
+        <p class="white">Das sind insgesamt <strong>{{ data.total_km }}</strong> Kilometer innerhalb von
+            <strong>{{ data.total_h }}</strong> Stunden</p>
+    </div>
+    <span class="subtitle">
+        Photo by ARieger (Own work) [<a href="http://www.gnu.org/copyleft/fdl.html">GFDL</a> or <a
+                href="http://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA-3.0</a>], <a
+                href="https://commons.wikimedia.org/wiki/File%3AWaldstadion-Neuenrade.jpg">via Wikimedia Commons</a>
+    </span>
+{% endblock %}

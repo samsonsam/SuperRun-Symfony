@@ -1,0 +1,35 @@
+security:
+    # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        our_db_provider:
+                    entity:
+                        class: App\Entity\MyUserEntity
+                        # if you're using multiple entity managers
+                        # manager_name: customer
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+             pattern:    ^/
+             http_basic: ~
+             provider: our_db_provider
+             anonymous: ~
+             form_login:
+                 login_path: login
+                 check_path: login
+             logout:
+                path: logout
+                target: start
+
+            # activate different ways to authenticate
+
+            # http_basic: ~
+            # https://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: ~
+            # https://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    encoders:
+        App\Entity\MyUserEntity:
+                    algorithm:            bcrypt
+                    cost:                 13
