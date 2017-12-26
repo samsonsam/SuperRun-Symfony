@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <div class="content-box">
+            <div class="content-wrapper">
+                <h3>Searched for "{{ search_string }}"</h3>
+                {% for elem in result %}
+                    <hr>
+                    <a href="{{ path('profile', {'id': elem.id}) }}">{{ elem.username }}</a>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

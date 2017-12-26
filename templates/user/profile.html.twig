@@ -1,4 +1,151 @@
 {% extends 'base.html.twig' %}
+
+
 {% block body %}
-    <h1>{{ page_title }}</h1>
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="content-box col-4 col-sm-4 col-md-4">
+                <div class="content-wrapper">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{ owner.username|title }}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-user-information">
+                                <tbody>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>
+                                        <a href="mailto:{{ owner.email }}">{{ owner.email }}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Anzahl der Lauftage:</td>
+                                    <td>{{ panel_data.day_amount }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Tage seit dem 1. Lauf:</td>
+                                    <td>{{ panel_data.days_since_first_run }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Strecke insgesamt</td>
+                                    <td>{{ panel_data.overall_distance }} km</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="content-box col-5 col-sm-5 col-md-5">
+                <div class="content-wrapper" style="overflow: auto">
+                    <h4>Laufeinträge</h4>
+                    {% if table_data is not null and table_data|length > 0 %}
+                        <table id="run_table">
+                            <thead>
+                            <tr>
+                                <th>Datum</th>
+                                <th>Gelaufene Strecke</th>
+                                <th>Gelaufene Zeit</th>
+                                <th>Ø-Geschwindigkeit</th>
+                                {% if isProfileOwner %}
+                                    <th><i class="fa fa-trash-o" aria-hidden="true"></i></th>
+                                {% endif %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for run in table_data %}
+                                <tr id="{{ run.id }}">
+                                    <td>{{ run.date }}</td>
+                                    <td>{{ run.distance }} km</td>
+                                    <td>{{ run.time }}</td>
+                                    <td>{{ run.average_speed }} km/h</td>
+                                    {% if isProfileOwner %}
+                                        <td><i id="minus-{{ run.id }}" class="fa fa-minus" aria-hidden="true"></i></td>
+                                    {% endif %}
+                                </tr>
+                                {% if isProfileOwner %}
+                                <script type="text/javascript">
+                                    $("#minus-{{ run.id }}").click(function () {
+                                        $("#{{ run.id }}").remove();
+                                        $.post("{{ path('delete', {'run_id': run.id } ) }}",
+                                            {},
+                                            function (data, status) {
+                                                console.log("Data: " + data + "\nStatus: " + status);
+                                            });
+                                    });
+                                    $('#form_Date_year').val(new Date().getFullYear());
+                                    $('#form_Date_month').val(new Date().getMonth());
+                                    $('#form_Date_day').val(new Date().getDay());
+                                </script>
+                                {% endif %}
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <br>
+                        Keine Einträge vorhanden.
+                    {% endif %}
+                </div>
+            </div>
+
+
+            {% if isProfileOwner %}
+                <div class="content-box col-3 col-sm-3 col-md-3">
+                    <div class="content-wrapper">
+                        <h4>Neuer Laufeintrag</h4>
+                        <div class="form-group">
+                            {#{% form_theme form 'bootstrap_3_layout.html.twig' %}#}
+                            {{ form_start(form) }}
+                            {{ form_widget(form) }}
+                            {{ form_end(form) }}
+                        </div>
+                        {% if errors is defined %}
+                            <h5>Ihre Eingabe enthält folgende Fehler.</h5>
+                            <ul>
+                                {% for error in errors %}
+                                    <li>{{ error.message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% if errors is defined and errors is not null %}
+        {{ errors }}
+    {% endif %}
+    {% if output is defined %}
+
+    {% endif %}
 {% endblock %}
+
+{% block scripts %}
+    {#<script type="text/javascript">#}
+    {#Date.prototype.toDateInputValue = (function () {#}
+    {#var local = new Date(this);#}
+    {#local.setMinutes(this.getMinutes() - this.getTimezoneOffset());#}
+    {#return local.toJSON().slice(0, 10);#}
+    {#});#}
+    {#document.getElementById('datePicker').value = new Date().toDateInputValue();#}
+
+    {#</script>#}
+{% endblock %}
+
+{#Läuferprofil: Beim Klick auf einen Läufernamen in der Übersicht soll man zum Profil des Läufers gelangen. Das Profil hat soll Folgendes anzeigen:
+Läufername
+Anzahl der Lauftage
+Gesamttage seit dem ersten Lauftag (bis heute, nicht bis zum letzten hinterlegten Lauftag)
+Gesamte bisher gelaufene Strecke
+Tabelle mit allen Laufeinträgen, absteigend sortiert nach Datum (neue Einträge oben). Diese Tabelle soll die folgenden Spalten haben:
+Datum
+Gelaufene Strecke
+Gelaufene Zeit
+Durchschnittgeschwindigkeit
+In jeder Zeile soll es eine Löschfunktion geben, die den betreffenden Laufeintrag löscht.
+Unter der Tabelle soll es ein Formular geben, um einen neuen Eintrag zum aktuell geöffneten Läuferprofil hinzuzufügen. Dabei werden vom Nutzer nur Datum, gelaufene Strecke und Zeit eingegeben; die Durchschnittsgeschwindigkeit soll die Anwendung selbst berechnen.#}

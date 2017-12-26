@@ -6,7 +6,11 @@
         <div class="mt-1">
             <h2>Wilkommen auf <strong>SuperRun</strong>.</h2>
             <p class="lead">Nutzen Sie dieses Lauftagebuch um einen Überblick ihrer Aktivitaten zu bekommen.</p>
-            <p>Hier einen <a href="{{ path('input') }}">Eintrag</a> erstellen.</p>
+            <p>Hier einen <a href="{% if is_granted('ROLE_USER') %}
+{{ path('profile', {'id': app.user.id}) }}
+{% else %}
+{{ path('login') }}
+{% endif %}">Eintrag</a> erstellen.</p>
         </div>
     </div>
 {% endblock %}
