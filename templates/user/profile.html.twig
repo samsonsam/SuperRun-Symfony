@@ -128,8 +128,8 @@
 {% block scripts %}
     <script type="text/javascript">
         date = new Date();
-        $('#form_Date_day').val(date.getDay());
-        $('#form_Date_month').val(date.getMonth());
+        $('#form_Date_day').val(date.getDate());
+        $('#form_Date_month').val(date.getMonth() + 1);
         $('#form_Date_year').val(date.getFullYear());
     </script>
 {% endblock %}
