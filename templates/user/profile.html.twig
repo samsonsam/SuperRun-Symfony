@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+{% endblock %}
 
 
 {% block body %}
     <div class="container">
-        <br>
         <div class="row">
-            <div class="content-box col-4 col-sm-4 col-md-4">
+            <div class="content-box col col-sm-7 col-md-7 col-lg-5">
                 <div class="content-wrapper">
                     <div class="panel panel-info">
                         <div class="panel-heading">
@@ -40,7 +42,7 @@
             </div>
 
 
-            <div class="content-box col-5 col-sm-5 col-md-5">
+            <div class="content-box col col-12 col-12 col-sm-12 col-md-12 col-lg-6">
                 <div class="content-wrapper" style="overflow: auto">
                     <h4>Laufeinträge</h4>
                     {% if table_data is not null and table_data|length > 0 %}
@@ -64,7 +66,8 @@
                                     <td>{{ run.time }}</td>
                                     <td>{{ run.average_speed }} km/h</td>
                                     {% if isProfileOwner %}
-                                        <td><i id="minus-{{ run.id }}" class="fa fa-minus" aria-hidden="true"></i></td>
+                                        <td><i id="minus-{{ run.id }}" class="fa fa-minus" aria-hidden="true"></i>
+                                        </td>
                                     {% endif %}
                                 </tr>
                                 {% if isProfileOwner %}
@@ -77,9 +80,6 @@
                                                 console.log("Data: " + data + "\nStatus: " + status);
                                             });
                                     });
-                                    $('#form_Date_year').val(new Date().getFullYear());
-                                    $('#form_Date_month').val(new Date().getMonth());
-                                    $('#form_Date_day').val(new Date().getDay());
                                 </script>
                                 {% endif %}
                             {% endfor %}
@@ -95,7 +95,7 @@
 
 
             {% if isProfileOwner %}
-                <div class="content-box col-3 col-sm-3 col-md-3">
+                <div class="content-box col-7 col-sm-7 col-md-6 col-lg-4 ">
                     <div class="content-wrapper">
                         <h4>Neuer Laufeintrag</h4>
                         <div class="form-group">
@@ -117,32 +117,16 @@
             {% endif %}
         </div>
     </div>
-    {% if errors is defined and errors is not null %}
-        {{ errors }}
-    {% endif %}
-    {% if output is defined %}
-
-    {% endif %}
 {% endblock %}
 
 {% block scripts %}
     <script type="text/javascript">
-        date = new Date();
-        $('#form_Date_day').val(date.getDate());
-        $('#form_Date_month').val(date.getMonth() + 1);
-        $('#form_Date_year').val(date.getFullYear());
+        window.onload = function () {
+            date = new Date();
+            $('#form_Date_day').val(date.getDate());
+            $('#form_Date_month').val(date.getMonth() + 1);
+            $('#form_Date_year').val(date.getFullYear());
+            $('#form_Distance').val(1);
+        };
     </script>
 {% endblock %}
-
-{#Läuferprofil: Beim Klick auf einen Läufernamen in der Übersicht soll man zum Profil des Läufers gelangen. Das Profil hat soll Folgendes anzeigen:
-Läufername
-Anzahl der Lauftage
-Gesamttage seit dem ersten Lauftag (bis heute, nicht bis zum letzten hinterlegten Lauftag)
-Gesamte bisher gelaufene Strecke
-Tabelle mit allen Laufeinträgen, absteigend sortiert nach Datum (neue Einträge oben). Diese Tabelle soll die folgenden Spalten haben:
-Datum
-Gelaufene Strecke
-Gelaufene Zeit
-Durchschnittgeschwindigkeit
-In jeder Zeile soll es eine Löschfunktion geben, die den betreffenden Laufeintrag löscht.
-Unter der Tabelle soll es ein Formular geben, um einen neuen Eintrag zum aktuell geöffneten Läuferprofil hinzuzufügen. Dabei werden vom Nutzer nur Datum, gelaufene Strecke und Zeit eingegeben; die Durchschnittsgeschwindigkeit soll die Anwendung selbst berechnen.#}

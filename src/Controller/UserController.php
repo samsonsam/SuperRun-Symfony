@@ -46,12 +46,56 @@ class UserController extends Controller
         }
         $owner = $this->getDoctrine()->getRepository('App:Entity\MyUserEntity')->loadUserByID($id);
 
+        // form
+        $form = $this->createFormBuilder()
+            ->setMethod('POST')
+            ->add($translator->trans('Time'), TimeType::class, array(
+                //'input' => 'timestamp',
+                'widget' => 'choice'
+            ))
+            ->add('Date', DateType::class, array(
+                'format' => 'dd MM yyyy'
 
-        $response = [
-            'isProfileOwner' => $owner->getId() == $loggedin_user->getId(),
-            'page_title' => 'Profil',
-            'owner' => $owner,
-        ];
+            ))
+            ->add('Distance', IntegerType::class)
+            ->add('Save', SubmitType::class, array('label' => 'Create entry'))
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() and $form->isValid()) {
+            $distance = $form['Distance']->getData();
+            $date = $form['Date']->getData();
+            $time = $form['Time']->getData();
+            $entry = new RunEntity();
+            $entry->setDate($date);
+            $entry->setDistance($distance);
+            $entry->setTime($time);
+            $entry->setUser($owner);
+            $entry->validate();
+            $validator = $this->get('validator');
+            $errors = $validator->validate($entry);
+
+            $validator = $this->get('validator');
+            $errors = $validator->validate($entry);
+
+            if (count($errors) > 0) {
+                /*
+                 * Uses a __toString method on the $errors variable which is a
+                 * ConstraintViolationList object. This gives us a nice string
+                 * for debugging.
+                 */
+                $errorsString = (string)$errors;
+                $response['errors'] = $errors;
+
+                //return new Response($errorsString);
+            } else {
+                $this->denyAccessUnlessGranted('add', $entry);
+                $manager->persist($entry);
+                $manager->flush();
+            }
+
+        }
+        // end form
 
         // prepare panel data
         $panel_data = null;
@@ -84,7 +128,6 @@ class UserController extends Controller
                 'overall_distance' => 0
             );
         }
-        $response['panel_data'] = $panel_data;
         // end prepare
 
         // prepare table data
@@ -100,62 +143,16 @@ class UserController extends Controller
                 'canDelete' => $this->isGranted('delete', $owner->getRuns())
             ];
         }
-        $response['table_data'] = $table_data;
         // end prepare
 
-
-        // form
-        $form = $this->createFormBuilder()
-            ->setMethod('POST')
-            ->add($translator->trans('Time'), TimeType::class, array(
-                //'input' => 'timestamp',
-                'widget' => 'choice'
-            ))
-            ->add('Date', DateType::class, array(
-                'format' => 'dd MM yyyy'
-
-            ))
-            ->add('Distance', IntegerType::class)
-            ->add('Save', SubmitType::class, array('label' => 'Create entry'))
-            ->getForm();
-        $form->handleRequest($request);
-        if ($form->isSubmitted() and $form->isValid()) {
-            $distance = $form['Distance']->getData();
-            $date = $form['Date']->getData();
-            $time = $form['Time']->getData();
-            $entry = new RunEntity();
-            $entry->setDate($date);
-            $entry->setDistance($distance);
-            $entry->setTime($time);
-            $entry->setUser($owner);
-            $entry->validate();
-            $validator = $this->get('validator');
-            $errors = $validator->validate($entry);
-
-            $validator = $this->get('validator');
-            $errors = $validator->validate($entry);
-
-            if (count($errors) > 0) {
-                /*
-                 * Uses a __toString method on the $errors variable which is a
-                 * ConstraintViolationList object. This gives us a nice string
-                 * for debugging.
-                 */
-                $errorsString = (string)$errors;
-                $response[] = ['errors' => $errors];
-
-                return new Response($errorsString);
-            } else {
-                $this->denyAccessUnlessGranted('add', $entry);
-                $manager->persist($entry);
-                $manager->flush();
-            }
-
-        }
-        $this->denyAccessUnlessGranted('view', $owner); //TODO implement access deny for unauthorized users
+        //generate response
+        $response['isProfileOwner'] = $owner->getId() == $loggedin_user->getId();
+        $response['page_title'] = 'Profil';
+        $response['owner'] = $owner;
+        $response['panel_data'] = $panel_data;
+        $response['table_data'] = $table_data;
         $response['form'] = $form->createView();
-        // end form
-
+        $this->denyAccessUnlessGranted('ROLE_USER');
         return $response;
     }
 
@@ -164,8 +161,13 @@ class UserController extends Controller
      */
     public function delete($run_id)
     {
-        $run = $this->getDoctrine()->getRepository('App:Entity\RunEntity')->find($run_id);
-        $this->denyAccessUnlessGranted('delete', $run);
-        $this->getDoctrine()->getRepository('App:Entity\RunEntity')->deleteRun($run_id);
+        if ($this->isGranted('delete', $this->getDoctrine()->getRepository('App:Entity\RunEntity')->find($run_id))) {
+            return new Response(
+                'deleted entry with id '.$run_id,
+                200
+            );
+        }
+        return new Response('',404);
+
     }
 }

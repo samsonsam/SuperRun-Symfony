@@ -32,20 +32,15 @@ class RunEntity
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank()
      * @Assert\Type("datetime")
-     * @Assert\LessThan("today")
+     * @Assert\LessThanOrEqual("today")
      */
     private $date;
 
     /**
      * @var
      * @ORM\Column(type="integer")
-     * @Assert\Range(
-     *      min = 1,
-     *      max = 40,
-     *      minMessage = "You running faster than {{ limit }} km/h ?",
-     *      maxMessage = "You running faster than {{ limit }} km/h ?"
-     * )
      * @Assert\Type("integer")
+     * @Assert\GreaterThan(0)
      */
     private $distance;
 
@@ -101,14 +96,15 @@ class RunEntity
      */
     public function setDate($date): void
     {
-        $now = new DateTime();
-        if (!isset($date)) {
-            throw new UnexpectedValueException('$Date was not set!');
-        } elseif ($date > $now) {
-            throw new UnexpectedValueException('$Date was invalid!');
-        } else {
-            $this->date = $date;
-        }
+//        $now = new DateTime();
+//        if (!isset($date)) {
+//            throw new UnexpectedValueException('$Date was not set!');
+//        } elseif ($date > $now) {
+//            throw new UnexpectedValueException('$Date was invalid!');
+//        } else {
+//            $this->date = $date;
+//        }
+        $this->date = $date;
     }
 
     /**
@@ -124,16 +120,17 @@ class RunEntity
      */
     public function setDistance($distance): void
     {
-        $distance = intval($distance);
-        if (!isset($distance)) {
-            throw new UnexpectedValueException('$Distance was not set!');
-        } elseif (!is_numeric($distance)) {
-            throw new UnexpectedValueException('$Distance was not numeric!');
-        }elseif ($distance <= 0) {
-            throw new UnexpectedValueException('$Distance can not be \'0\'!');
-        } else {
-            $this->distance = $distance;
-        }
+//        $distance = intval($distance);
+//        if (!isset($distance)) {
+//            throw new UnexpectedValueException('$Distance was not set!');
+//        } elseif (!is_numeric($distance)) {
+//            throw new UnexpectedValueException('$Distance was not numeric!');
+//        }elseif ($distance <= 0) {
+//            throw new UnexpectedValueException('$Distance can not be \'0\'!');
+//        } else {
+//            $this->distance = $distance;
+//        }
+        $this->distance = $distance;
     }
 
     /**

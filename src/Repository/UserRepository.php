@@ -29,7 +29,7 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
     public function searchForUserByName($query) {
         return $this->createQueryBuilder('u')
             ->where('u.username LIKE :query')
-            ->setParameter('query', '%'.$query.'%')
+            ->setParameter('query', $query.'%')
             ->getQuery()
             ->getResult();
     }
