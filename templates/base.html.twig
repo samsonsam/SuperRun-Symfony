@@ -35,7 +35,7 @@
             <ul class="navbar-nav ml-auto">
                 <form class="form-inline mt-2 mt-md-0" role="search" method="post" action="{{ path('search') }}">
                     <input class="form-control mr-sm-2" type="text" placeholder="Profil" aria-label="Search" name="query">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Suche</button>
+                    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Suche</button>
                 </form>
                 <div class="seperator"></div>
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and is_granted('ROLE_USER') %}

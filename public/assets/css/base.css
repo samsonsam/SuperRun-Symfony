@@ -65,7 +65,7 @@ h1 {
 }
 
 .navbar {
-    background-color: #4267b2;
+    background-color: #dcd027;
 }
 
 .navbar-brand > b {
@@ -85,6 +85,6 @@ h1 {
 
 .seperator {
     margin: 0 5px 0 7px;
-    border-left: 1px solid cornflowerblue;
+    border-left: 1px solid #eda725;
 
 }
