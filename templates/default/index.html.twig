@@ -4,7 +4,7 @@
 {% block body %}
     <div class="container">
         <div class="mt-1">
-            <h2>Wilkommen auf <strong>SuperRun</strong>.</h2>
+            <h2>Willkommen auf <strong>SuperRun</strong>.</h2>
             <p class="lead">Nutzen Sie dieses Lauftagebuch um einen Überblick ihrer Aktivitaten zu bekommen.</p>
             <p>Hier einen <a href="{% if is_granted('ROLE_USER') %}
 {{ path('profile', {'id': app.user.id}) }}
