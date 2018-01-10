@@ -159,7 +159,8 @@ class MyUserEntity implements UserInterface, \Serializable
         return $this->roles;
     }
 
-    public function setRoles(array $roles) {
+    public function setRoles(array $roles)
+    {
         $this->roles = $roles;
     }
 
@@ -225,6 +226,36 @@ class MyUserEntity implements UserInterface, \Serializable
         }
 
 
+    }
+
+    function getOverviewData()
+    {
+        if (0 != count($this->getRuns())) {
+            $day_amount = 1;
+            $overall_distance = 0;
+
+            foreach ($this->getRuns() as $key => $value) {
+                if ($key > 0 and $this->getRuns()[$key - 1]->getDate() == $value->getDate()) {
+                    $day_amount++;
+                }
+                $overall_distance += $value->getDistance();
+            }
+
+            return array(
+                'id' => $this->getId(),
+                'name' => $this->getUsername(),
+                'day_amount' => $day_amount,
+                'overall_distance' => $overall_distance
+            );
+
+        } else {
+            return array(
+                'id' => $this->getId(),
+                'name' => $this->getUsername(),
+                'day_amount' => 0,
+                'overall_distance' => 0
+            );
+        }
     }
 
     function getTableData()

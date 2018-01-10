@@ -71,12 +71,12 @@ class UserController extends Controller
             $entry->setDistance($distance);
             $entry->setTime($time);
             $entry->setUser($owner);
-            $entry->validate();
             $validator = $this->get('validator');
             $errors = $validator->validate($entry);
 
             $validator = $this->get('validator');
             $errors = $validator->validate($entry);
+            $entry->validate();
 
             if (count($errors) > 0) {
                 /*
@@ -84,7 +84,7 @@ class UserController extends Controller
                  * ConstraintViolationList object. This gives us a nice string
                  * for debugging.
                  */
-                $errorsString = (string)$errors;
+                //$errorsString = (string)$errors;
                 $response['errors'] = $errors;
 
                 //return new Response($errorsString);

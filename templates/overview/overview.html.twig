@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/overview.css') }}">
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <table id="overview_table">
+            <thead>
+            <tr>
+                <th>Läufername</th>
+                <th>Anzahl der Lauftage</th>
+                <th>Gelaufene Strecke</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for person in data %}
+            <tr>
+                <td><a href="{{ path('profile', {'id': person.id}) }}">{{ person.name|title }}</a></td>
+                <td>{{ person.day_amount }} </td>
+                <td>{{ person.overall_distance }} km</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

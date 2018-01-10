@@ -54,7 +54,7 @@
                                 <th>Gelaufene Zeit</th>
                                 <th>Ø-Geschwindigkeit</th>
                                 {% if isProfileOwner %}
-                                    <th><i class="fa fa-trash-o" aria-hidden="true"></i></th>
+                                    <th>{# <i class="fa fa-trash-o" aria-hidden="true"></i> #}</th>
                                 {% endif %}
                             </tr>
                             </thead>
@@ -66,7 +66,9 @@
                                     <td>{{ run.time }}</td>
                                     <td>{{ run.average_speed }} km/h</td>
                                     {% if isProfileOwner %}
-                                        <td><i id="minus-{{ run.id }}" class="fa fa-minus" aria-hidden="true"></i>
+                                        <td>
+                                            <i id="minus-{{ run.id }}" class="fa fa-trash-o" aria-hidden="true"></i>
+
                                         </td>
                                     {% endif %}
                                 </tr>

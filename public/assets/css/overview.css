@@ -1,20 +1,20 @@
-#run_table {
+#overview_table {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
     font-size: x-small;
 }
 
-#run_table td, #run_table th {
+#overview_table td, #overview_table th {
     border: 1px solid #ddd;
     padding: 8px;
 }
 
-#run_table tr:nth-child(even){background-color: #f2f2f2;}
+#overview_table tr:nth-child(even){background-color: #f2f2f2;}
 
-/*#run_table tr:hover {background-color: #ddd;}*/
+/*#overview_table tr:hover {background-color: #ddd;}*/
 
-#run_table th {
+#overview_table th {
     /*padding-top: 12px;*/
     /*padding-bottom: 12px;*/
     /*text-align: left;*/
@@ -25,18 +25,4 @@
     border-bottom: 1px solid #dddfe2;
     border-radius: 2px 2px 0 0;
     font-weight: bold;
-}
-.fa-trash-o:hover {
-    background-color: lightgray;
-    border-radius: 25px;
-    border: lightgray solid 5px;
-    /*margin: 5px;*/
-
-}
-.fa-trash-o {
-    border: transparent solid 5px;
-}
-
-.content-wrapper {
-    width: 100%;
 }

@@ -26,6 +26,11 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
 
     }
 
+    public function findAll()
+    {
+        return parent::findAll();
+    }
+
     public function searchForUserByName($query) {
         return $this->createQueryBuilder('u')
             ->where('u.username LIKE :query')
